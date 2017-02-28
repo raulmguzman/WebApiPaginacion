@@ -1,0 +1,85 @@
+﻿@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            //neccesitamos crear el objeto que vamos a insertar
+            var producto = new Object();
+            mostrarProductos();
+
+            $("#btnpaginar").click(function () {
+                //neccesitamos crear el objeto que vamos a insertar
+                $("#tabla tbody").html("");
+                var pagina = new Object();
+                //Asignamos las propiedades con el mismo formato json
+                pagina = $("#txtpage").val();
+                elemetos = $("#txtrows").val();
+                var url =
+                    "http://localhost:49625/api/productos/?page="
+                    + pagina + "&rows=" + elemetos;
+                $.getJSON(url, function (data) {
+                    var objeto = new Object();
+                    $.each(data.Results, function (k, Results) {
+                            var item = "<tr>";
+                            item += "<td>" + Results.PROD_ID + "</td>";
+                            item += "<td>" + Results.PNAME + "</td>";
+                            item += "<td>" + Results.PDESC + "</td>";
+                            item += "<td>" + Results.ALMACEN + "</td>";
+                            item += "</tr>";
+                            $("#tabla tbody").append(item);
+                        
+                    });
+                });
+            })
+
+
+
+            function mostrarProductos() {
+                var url = "http://localhost:49625/api/productos/";
+                $("#tabla tbody").html("");
+                $.getJSON(url, function (data) {
+                    //Vamos a recorrer todos los departamentos que están en data
+                    //y los vamos a insertar en la tabla
+                    $.each(data, function (k, pro) {
+                        var item = "<tr>";
+                        item += "<td>" + pro.PROD_ID + "</td>";
+                        item += "<td>" + pro.PNAME + "</td>";
+                        item += "<td>" + pro.PDESC + "</td>";
+                        item += "<td>" + pro.ALMACEN + "</td>";
+                        item += "</tr>";
+                        $("#tabla tbody").append(item);
+                    });
+                });
+            }
+        });
+    </script>
+}
+
+<h2>MVC con Cliente Web API</h2>
+
+<div>
+    <label>Numero de página: </label>
+    <input type="text" id="txtpage" class="form-control" />
+</div>
+<div>
+    <label>Número de elementos a paginar: </label>
+    <input type="text" id="txtrows" class="form-control" />
+</div>
+<br />
+<div>
+    <button type="button" id="btnpaginar" class="btn-success">Paginar Productos</button>
+</div>
+<hr />
+<table id="tabla" class="table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Numero</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Almacén</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<hr />
+<div id="mensaje"></div>
+
