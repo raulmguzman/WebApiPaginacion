@@ -23,29 +23,12 @@ namespace WebApiPaginacion.Models
             return productos.ToList();
         }
 
-        //public int GetNumeroProductos()
-        //{
-        //    return entidad.PRODUCTOS.Count();
-        //}
-
-        //public List<PRODUCTOS> GetProductos(int? id)
-        //{
-        //    var productos = (from datos in entidad.PRODUCTOS
-        //                     select datos)
-        //    .OrderBy(z => z.PROD_ID)
-        //    .Skip(id.GetValueOrDefault())
-        //    .Take(5)
-        //    .ToList();
-        //    return productos;
-        //}
-
-
         [ResponseType(typeof(ProductosPaginaResult<PRODUCTOS>))]
         public ProductosPaginaResult<PRODUCTOS> GetProductos(int page, int rows)
         {
-            var totalRows = entidad.PRODUCTOS.Count();
-            var totalPages = (int)Math.Ceiling((double)totalRows / rows);
-            var results = entidad.PRODUCTOS
+            var elementostotales = entidad.PRODUCTOS.Count();
+            var paginastotales = (int)Math.Ceiling((double)elementostotales / rows);
+            var productos = entidad.PRODUCTOS
                 .OrderBy(c => c.PROD_ID)
                 .Skip((page) * rows)
                 .Take(rows)
@@ -53,11 +36,11 @@ namespace WebApiPaginacion.Models
 
             var result = new ProductosPaginaResult<PRODUCTOS>()
             {
-                PageSize = rows,
-                TotalRows = totalRows,
-                TotalPages = totalPages,
-                CurrentPage = page,
-                Results = results
+                ElementosPagina = rows,
+                ElementosTotales = elementostotales,
+                PaginasTotales = paginastotales,
+                PaginaActual = page,
+                Productos = productos
             };
 
             return result;

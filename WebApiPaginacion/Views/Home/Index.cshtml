@@ -18,12 +18,12 @@
                     + pagina + "&rows=" + elemetos;
                 $.getJSON(url, function (data) {
                     var objeto = new Object();
-                    $.each(data.Results, function (k, Results) {
+                    $.each(data.Productos, function (k, Productos) {
                             var item = "<tr>";
-                            item += "<td>" + Results.PROD_ID + "</td>";
-                            item += "<td>" + Results.PNAME + "</td>";
-                            item += "<td>" + Results.PDESC + "</td>";
-                            item += "<td>" + Results.ALMACEN + "</td>";
+                            item += "<td>" + Productos.PROD_ID + "</td>";
+                            item += "<td>" + Productos.PNAME + "</td>";
+                            item += "<td>" + Productos.PDESC + "</td>";
+                            item += "<td>" + Productos.ALMACEN + "</td>";
                             item += "</tr>";
                             $("#tabla tbody").append(item);
                         
